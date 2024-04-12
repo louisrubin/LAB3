@@ -10,7 +10,7 @@ namespace LAB3
     {
         private int nroCuenta;
         private double saldoActual = 0;
-        private DateTime fechaApertura, ultimoAdelanto;
+        private DateTime fechaApertura;
         private Usuario usuario;        // relacion --> clase Usuario
         private double maxSaldoNegat;   // maximo de extraccion en negativo
         
@@ -55,19 +55,21 @@ namespace LAB3
         }
 
         // METODOS
-        public double deposito { set { this.saldoActual += value; } }
-        public double extraccion
+        public void deposito(double monto)
         {
-            set
+            this.saldoActual += monto;
+            Console.WriteLine("Deposito exitoso.");
+        }
+        public void extraccion(double montoExtraer)
+        {
+            if (montoExtraer > saldoActual + maxSaldoNegat)    // formula 
             {
-                if (value > saldoActual + maxSaldoNegat)    // formula 
-                {
-                    Console.WriteLine("Saldo insuficiente.");
-                }
-                else
-                {
-                    this.saldoActual -= value;  // efectua la extraccion
-                }
+                Console.WriteLine("Saldo insuficiente.");
+            }
+            else
+            {
+                this.saldoActual -= montoExtraer;  // efectua la extraccion
+                Console.WriteLine("Extracción exitosa.");
             }
         }
         // ADELANTO TENIENDO EN CUENTA LA FECHA DEL ULTIMO ADELANTO.
