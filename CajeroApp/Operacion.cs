@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LAB3
 {
-    internal class Operacion
+    public class Operacion
     {
         private int idOperacion;
         private DateTime fechaOperac;
@@ -28,7 +28,7 @@ namespace LAB3
         public void toString()
         {
             Console.WriteLine($"ID Operacion: {idOperacion}, " +
-                $"Fecha: {fechaOperac.ToString("yyyy/mm/dd")}, " +
+                $"Fecha: {fechaOperac.ToString("dd/MM/yyyy")}, " +
                 $"CajeroNro: {cajero.getNroCajero}, Operacion: {tipoOperacion}, " +
                 $"Monto: ${monto}");
         }

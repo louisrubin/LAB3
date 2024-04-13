@@ -34,6 +34,12 @@ namespace LAB3
             this.enActividad = enActiv;
         }
 
+        public void toString()
+        {
+            string enActiv = (enActividad) ? "Si" : "No";
+            Console.WriteLine($"ID: {id}, Nombre: {nombre.ToUpper()}, Direccion: {direccion}, En Actividad: {enActiv}");
+        }
+
         // GETers
         public int getId { get { return id; } }
         public string getNombre { get { return nombre; } }

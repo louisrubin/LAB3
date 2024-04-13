@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LAB3
 {
-    internal class Cajero
+    public class Cajero
     {
         private string direccion;
         private int nroCajero;
@@ -71,7 +71,7 @@ namespace LAB3
                 Console.Write("Monto a depositar: $");
                 double montoDeposito;
                 double.TryParse(Console.ReadLine(), out montoDeposito);
-                this.cuentaBancaria.deposito(montoDeposito);
+                this.cuentaBancaria.deposito(montoDeposito, this , diaActual);
             } else Console.WriteLine("No existe una Cuenta Bancaria.");
             
         }
@@ -83,23 +83,29 @@ namespace LAB3
                 Console.Write("Monto a extraer: $");
                 double montoExtraccion;
                 double.TryParse(Console.ReadLine(), out montoExtraccion);
-                this.cuentaBancaria.extraccion(montoExtraccion);
+                this.cuentaBancaria.extraccion(montoExtraccion, this, diaActual);
             }
             else Console.WriteLine("No existe una Cuenta Bancaria.");
         }
 
         public void prestamoAdelanto()
         {
-
+            // ...
         }
 
-        public void aumentarMeses(byte cantMeses=2) // aumenta cant de meses (por default: 2)
+        public void aumentarDias(byte cantDias = 10) // aumenta cant de meses (por default: 2)
         {
-            diaActual = diaActual.AddMonths(cantMeses);
+            diaActual = diaActual.AddDays(cantDias);
+        }
+
+        public void toString()
+        {
+            Console.WriteLine($"NRO Cajero: {nroCajero}, Direccion: {direccion}");
         }
 
 
         // GETTERS Y SETTERS
+        public CuentaBancaria getCuentaBancaria => this.cuentaBancaria; // C# 6 o posterior (return cuentaBancaria)
         public DateTime getDiaActual { get { return diaActual;  } }
         public string Direccion { get { return direccion; } }
         public int getNroCajero { get { return nroCajero; } }

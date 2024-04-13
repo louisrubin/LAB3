@@ -13,8 +13,8 @@ namespace LAB3
         private DateTime fechaApertura;
         private Usuario usuario;        // relacion --> clase Usuario
         private double maxSaldoNegat;   // maximo de extraccion en negativo
-        
-        //private int adelantoCada = 15;  // días para adelanto de plata 
+
+        private List<Operacion> operacions = new List<Operacion>();
 
         static int sigNroCuenta = 1000;     // variable estatica para asignar nroCuenta
 
@@ -55,23 +55,56 @@ namespace LAB3
         }
 
         // METODOS
-        public void deposito(double monto)
+        public void deposito(double monto, Cajero cajero, DateTime fechaOperacion )
         {
-            this.saldoActual += monto;
-            Console.WriteLine("Deposito exitoso.");
+            try
+            {
+                string tipoOperacion = "DEPOSITO";
+                this.saldoActual += monto;
+                // agrego a la List de Operaciones
+                this.operacions.Add(new Operacion(fechaOperacion, cajero, tipoOperacion, monto));
+                Console.WriteLine("Deposito exitoso.");
+            } catch
+            {
+                Console.WriteLine("Hubo un error en el depósito.");
+            }
+            
         }
-        public void extraccion(double montoExtraer)
+        public void extraccion(double montoExtraer, Cajero cajero, DateTime fechaOperacion)
         {
-            if (montoExtraer > saldoActual + maxSaldoNegat)    // formula 
+            try
             {
-                Console.WriteLine("Saldo insuficiente.");
+                if (montoExtraer > saldoActual + maxSaldoNegat)    // formula 
+                {
+                    Console.WriteLine("Saldo insuficiente.");
+                }
+                else
+                {
+                    string tipoOperacion = "EXTRACCION";
+                    this.saldoActual -= montoExtraer;  // efectua la extraccion
+                    this.operacions.Add(new Operacion(fechaOperacion, cajero, tipoOperacion, montoExtraer));
+                    Console.WriteLine("Extracción exitosa.");
+                }
             }
-            else
+            catch
             {
-                this.saldoActual -= montoExtraer;  // efectua la extraccion
-                Console.WriteLine("Extracción exitosa.");
+                Console.WriteLine("Hubo un error en la extracción.");
             }
         }
+
+        public void verMovimientos()
+        {
+            Console.WriteLine("LISTA DE MOVIMIENTOS: ");
+            if (operacions.Count > 0)
+            {
+                foreach (Operacion oper in this.operacions)
+                {
+                    oper.toString();
+                }
+            }
+            else Console.WriteLine("\tSin Movimientos.");
+        }
+
         // ADELANTO TENIENDO EN CUENTA LA FECHA DEL ULTIMO ADELANTO.
         //public double adelanto
         //{
@@ -115,7 +148,8 @@ namespace LAB3
 
 
         // GETTERS Y SETTER
-        public int getNroCuenta { get { return nroCuenta; } }
+        public List<Operacion> getOperaciones => operacions; // C# 6 o posterior (return operacions)
+        public int getNroCuenta => nroCuenta;   
         public double getSaldoActual { get { return saldoActual; } }
         public DateTime getFechaApertura { get { return fechaApertura; } }
         public DateTime setFechaApertura { set { this.fechaApertura = value; } }
