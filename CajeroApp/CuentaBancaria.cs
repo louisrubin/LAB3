@@ -55,14 +55,14 @@ namespace LAB3
         }
 
         // METODOS
-        public void deposito(double monto, Cajero cajero, DateTime fechaOperacion )
+        public void deposito(double montoDepositar, Cajero cajero, DateTime fechaOperacion )
         {
             try
             {
                 string tipoOperacion = "DEPOSITO";
-                this.saldoActual += monto;
+                this.saldoActual += montoDepositar;
                 // agrego a la List de Operaciones
-                this.operacions.Add(new Operacion(fechaOperacion, cajero, tipoOperacion, monto));
+                this.operacions.Add(new Operacion(fechaOperacion, cajero, tipoOperacion, montoDepositar, saldoActual));
                 Console.WriteLine("Deposito exitoso.");
             } catch
             {
@@ -82,7 +82,7 @@ namespace LAB3
                 {
                     string tipoOperacion = "EXTRACCION";
                     this.saldoActual -= montoExtraer;  // efectua la extraccion
-                    this.operacions.Add(new Operacion(fechaOperacion, cajero, tipoOperacion, montoExtraer));
+                    this.operacions.Add(new Operacion(fechaOperacion, cajero, tipoOperacion, montoExtraer, saldoActual));
                     Console.WriteLine("Extracción exitosa.");
                 }
             }
@@ -91,6 +91,7 @@ namespace LAB3
                 Console.WriteLine("Hubo un error en la extracción.");
             }
         }
+
 
         public void verMovimientos()
         {

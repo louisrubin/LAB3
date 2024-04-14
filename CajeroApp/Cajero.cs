@@ -12,9 +12,9 @@ namespace LAB3
         private int nroCajero;
 
         private CuentaBancaria cuentaBancaria;
-        private DateTime diaActual = DateTime.Today;    // dia actual en cajero
+        private DateTime fechaActual = DateTime.Today;    // dia actual en cajero
 
-        //private List<CuentaBancaria> cuentaBancarias = new List<CuentaBancaria>();
+        private bool obtuvoCredito = false;
 
         static int sigNroCjro = 10;
 
@@ -71,7 +71,7 @@ namespace LAB3
                 Console.Write("Monto a depositar: $");
                 double montoDeposito;
                 double.TryParse(Console.ReadLine(), out montoDeposito);
-                this.cuentaBancaria.deposito(montoDeposito, this , diaActual);
+                this.cuentaBancaria.deposito(montoDeposito, this , fechaActual);
             } else Console.WriteLine("No existe una Cuenta Bancaria.");
             
         }
@@ -83,19 +83,44 @@ namespace LAB3
                 Console.Write("Monto a extraer: $");
                 double montoExtraccion;
                 double.TryParse(Console.ReadLine(), out montoExtraccion);
-                this.cuentaBancaria.extraccion(montoExtraccion, this, diaActual);
+                this.cuentaBancaria.extraccion(montoExtraccion, this, fechaActual);
             }
             else Console.WriteLine("No existe una Cuenta Bancaria.");
         }
 
-        public void prestamoAdelanto()
+        public bool ofrecerCredito( )
         {
-            // ...
+            if (cuentaBancaria != null && obtuvoCredito==false)     // mientras exista una cuenta Bancaria
+            {
+                List<Operacion> listOperaciones = cuentaBancaria.getOperaciones;
+
+                foreach (Operacion oper in Enumerable.Reverse(listOperaciones))  // Enumerable.Reverse() recorre la lista en reversa
+                {
+                    // nuevo saldo desp. de operacion >= 20000 y hay una diferencia de 60 días
+                    if (oper.getNuevoSaldo >= 20000 && 
+                        ( Math.Abs( (fechaActual - oper.getFechaOperacion).Days )) >= 60 ) {
+                        cuentaBancaria.setMaxSaldoNegat = 80000;
+                        obtuvoCredito = true;
+
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("\n\t¡Felicidades haz obtenido un crédito! \n\t¡Ahora puede extraer hasta $80.000!");
+                        Console.ResetColor();
+
+                        return true;     
+                    }
+                }
+            }
+            return false;
+        }
+        public void verMovimientos()
+        {
+            if (cuentaBancaria != null) cuentaBancaria.verMovimientos();
+            else Console.WriteLine("No existe una Cuenta Bancaria.");
         }
 
-        public void aumentarDias(byte cantDias = 10) // aumenta cant de meses (por default: 2)
+        public void aumentarDias(byte cantDias = 15) // aumenta cant de dias (por default = )
         {
-            diaActual = diaActual.AddDays(cantDias);
+            fechaActual = fechaActual.AddDays(cantDias);
         }
 
         public void toString()
@@ -105,8 +130,13 @@ namespace LAB3
 
 
         // GETTERS Y SETTERS
+        public double getSaldoActual { 
+            get {
+                if (cuentaBancaria != null) return cuentaBancaria.getSaldoActual;
+                else return 0; 
+            } }
         public CuentaBancaria getCuentaBancaria => this.cuentaBancaria; // C# 6 o posterior (return cuentaBancaria)
-        public DateTime getDiaActual { get { return diaActual;  } }
+        public DateTime getDiaActual { get { return fechaActual;  } }
         public string Direccion { get { return direccion; } }
         public int getNroCajero { get { return nroCajero; } }
     }
